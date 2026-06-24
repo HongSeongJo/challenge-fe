@@ -1,85 +1,80 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { useAuthStore } from './stores/auth'
+import challpotIcon from '@/assets/challpot-icon.png'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <header class="app-header">
+    <RouterLink to="/" class="brand">
+      <img :src="challpotIcon" alt="Challpot" class="brand-icon" />
+      <span class="brand-name">Challpot</span>
+    </RouterLink>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <nav>
+      <template v-if="authStore.accessToken">
+        <span class="user-email">{{ authStore.user?.nickname ?? authStore.user?.email }}</span>
+        <button class="ghost-button" type="button" @click="authStore.logout">로그아웃</button>
+      </template>
+      <RouterLink v-else to="/login" class="ghost-button">로그인</RouterLink>
+    </nav>
   </header>
 
   <RouterView />
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 2rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 2rem;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
 }
 
-nav a.router-link-exact-active {
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
   color: var(--color-text);
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.user-email {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
 }
 
-nav a:first-of-type {
-  border: 0;
+.ghost-button {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.ghost-button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 </style>
