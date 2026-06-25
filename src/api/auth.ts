@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPatch } from './http'
+import { apiGet, apiPost, apiPatch, apiDelete } from './http'
 
 export interface TokenResponse {
   accessToken: string
@@ -37,6 +37,14 @@ export function fetchMe(accessToken: string) {
 
 export function updateNickname(accessToken: string, nickname: string) {
   return apiPatch<UserResponse>('/api/users/me/nickname', { nickname }, { Authorization: `Bearer ${accessToken}` })
+}
+
+export function logout(refreshToken: string) {
+  return apiPost<void>('/api/auth/logout', { refreshToken })
+}
+
+export function withdraw(accessToken: string) {
+  return apiDelete<void>('/api/users/me', { Authorization: `Bearer ${accessToken}` })
 }
 
 export function checkNicknameAvailable(nickname: string) {

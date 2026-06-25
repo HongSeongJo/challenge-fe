@@ -53,7 +53,21 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = await authApi.updateNickname(accessToken.value, nickname)
   }
 
-  function logout() {
+  async function logout() {
+    const token = refreshToken.value
+    clearTokens()
+    if (token) {
+      try {
+        await authApi.logout(token)
+      } catch {
+        // refresh token이 이미 만료/무효해도 클라이언트는 어차피 로그아웃 상태이므로 무시한다.
+      }
+    }
+  }
+
+  async function withdraw() {
+    if (!accessToken.value) return
+    await authApi.withdraw(accessToken.value)
     clearTokens()
   }
 
@@ -67,6 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
     exchangeOAuth2Code,
     setNickname,
     logout,
+    withdraw,
     loadMe,
   }
 })

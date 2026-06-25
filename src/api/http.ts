@@ -40,3 +40,7 @@ export function apiPost<T>(path: string, body?: unknown, headers?: HeadersInit):
 export function apiPatch<T>(path: string, body?: unknown, headers?: HeadersInit): Promise<T> {
   return request<T>(path, { method: 'PATCH', body: body ? JSON.stringify(body) : undefined, headers })
 }
+
+export function apiDelete<T>(path: string, headers?: HeadersInit): Promise<T> {
+  return request<T>(path, { method: 'DELETE', headers })
+}

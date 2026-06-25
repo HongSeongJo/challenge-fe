@@ -15,7 +15,7 @@ const authStore = useAuthStore()
 
     <nav>
       <template v-if="authStore.accessToken">
-        <span class="user-email">{{ authStore.user?.nickname ?? authStore.user?.email }}</span>
+        <RouterLink to="/settings" class="user-email">{{ authStore.user?.nickname ?? authStore.user?.email }}</RouterLink>
         <button class="ghost-button" type="button" @click="authStore.logout">로그아웃</button>
       </template>
       <RouterLink v-else to="/login" class="ghost-button">로그인</RouterLink>
@@ -60,8 +60,12 @@ nav {
 }
 
 .user-email {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted) !important;
   font-size: 0.9rem;
+}
+
+.user-email:hover {
+  color: var(--color-accent) !important;
 }
 
 .ghost-button {
