@@ -10,7 +10,7 @@ const isSubmitting = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
-const { status: nicknameStatus } = useNicknameAvailability(nickname)
+const { status: nicknameStatus, checkNow: checkNicknameNow } = useNicknameAvailability(nickname)
 
 const nicknameHint = computed(() => {
   switch (nicknameStatus.value) {
@@ -48,7 +48,10 @@ async function onSubmit() {
       <p class="description">챌린지에서 사용할 닉네임이에요. 나중에 바꿀 수 없으니 신중하게 골라주세요.</p>
       <form @submit.prevent="onSubmit">
         <div>
-          <input v-model="nickname" type="text" placeholder="닉네임" required />
+          <div class="nickname-row">
+            <input v-model="nickname" type="text" placeholder="닉네임" required />
+            <button class="ghost-button" type="button" :disabled="!nickname" @click="checkNicknameNow">중복확인</button>
+          </div>
           <p v-if="nicknameHint" :class="nicknameHint.className">{{ nicknameHint.text }}</p>
         </div>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>

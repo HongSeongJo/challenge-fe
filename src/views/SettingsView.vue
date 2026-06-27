@@ -15,7 +15,7 @@ async function onWithdraw() {
   isWithdrawing.value = true
   try {
     await authStore.withdraw()
-    router.push('/login')
+    router.replace('/login')
   } catch {
     errorMessage.value = '탈퇴 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.'
   } finally {

@@ -51,6 +51,18 @@ export function checkNicknameAvailable(nickname: string) {
   return apiGet<{ available: boolean }>(`/api/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`)
 }
 
+export function checkEmailAvailable(email: string) {
+  return apiGet<{ available: boolean }>(`/api/auth/check-email?email=${encodeURIComponent(email)}`)
+}
+
+export function sendEmailCode(email: string) {
+  return apiPost<void>('/api/auth/email/send-code', { email })
+}
+
+export function verifyEmailCode(email: string, code: string) {
+  return apiPost<void>('/api/auth/email/verify-code', { email, code })
+}
+
 export function kakaoLoginUrl(apiBaseUrl: string) {
   return `${apiBaseUrl}/oauth2/authorization/kakao`
 }
