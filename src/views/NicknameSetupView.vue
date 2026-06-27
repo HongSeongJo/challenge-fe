@@ -26,7 +26,7 @@ const nicknameHint = computed(() => {
 })
 
 async function onSubmit() {
-  if (nicknameStatus.value === 'taken') return
+  if (nicknameStatus.value !== 'available') return
 
   errorMessage.value = ''
   isSubmitting.value = true
@@ -55,7 +55,7 @@ async function onSubmit() {
           <p v-if="nicknameHint" :class="nicknameHint.className">{{ nicknameHint.text }}</p>
         </div>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-        <button class="primary-button" type="submit" :disabled="isSubmitting">시작하기</button>
+        <button class="primary-button" type="submit" :disabled="isSubmitting || nicknameStatus !== 'available'">시작하기</button>
       </form>
     </div>
   </main>
@@ -128,6 +128,36 @@ input:focus {
 
 .primary-button:disabled {
   opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.nickname-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nickname-row input {
+  flex: 1;
+}
+
+.ghost-button {
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  padding: 0 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.ghost-button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 

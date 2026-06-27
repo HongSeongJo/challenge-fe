@@ -87,7 +87,7 @@ async function onVerifyCode() {
 }
 
 async function onSubmit() {
-  if (nicknameStatus.value === 'taken' || !isEmailVerified.value) return
+  if (nicknameStatus.value !== 'available' || !isEmailVerified.value) return
 
   errorMessage.value = ''
   isSubmitting.value = true
@@ -152,7 +152,7 @@ async function onSubmit() {
           <p v-if="nicknameHint" :class="nicknameHint.className">{{ nicknameHint.text }}</p>
         </div>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-        <button class="primary-button" type="submit" :disabled="isSubmitting || !isEmailVerified">가입하기</button>
+        <button class="primary-button" type="submit" :disabled="isSubmitting || !isEmailVerified || nicknameStatus !== 'available'">가입하기</button>
       </form>
 
       <p class="footer-link">
