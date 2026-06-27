@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 import HomeView from '../views/HomeView.vue'
+
+const requiresAuth = ['home', 'settings', 'nickname-setup']
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +43,13 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
   ],
+})
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+  if (requiresAuth.includes(to.name as string) && !authStore.accessToken) {
+    return { name: 'login' }
+  }
 })
 
 export default router
